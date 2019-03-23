@@ -2,8 +2,8 @@ import pygame, sys, random
 from pygame.locals import *
 pygame.init()
 
-WIDTH = 400
-HEIGHT = 600
+WIDTH = 560
+HEIGHT = 620
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Pacman")
 
