@@ -11,7 +11,7 @@ PACMAN_X = 50
 PACMAN_Y = 50
 PACMAN_WIDTH = 40
 PACMAN_HEIGHT = 60
-PACMAN_VEL = 5
+PACMAN_VEL = 1
 
 YELLOW = (255,255,153)
 BLACK = (0, 0, 0)
@@ -93,12 +93,12 @@ def drawMap():
     for i in range (0, 12):
         pygame.draw.rect (screen, WHITE, [x, y, 5, 5], 0)
         x = x + 20
-    pygame.display.update()  
+    
 
 def sprite_move():
 	run = True
 	while run:
-		pygame.time.delay(100)
+		
 
 	        for event in pygame.event.get():
         	        if event.type == pygame.QUIT:
@@ -123,11 +123,10 @@ def sprite_move():
 		drawMap()
 		pygame.draw.rect(screen, YELLOW, (PACMAN_X, PACMAN_Y, PACMAN_WIDTH, PACMAN_HEIGHT))
 		pygame.display.update()
- 
-
 def main():
     drawMap()
     sprite_move()
+    
     
 inPlay = True
 print "Hit ESC to end the program."
@@ -137,6 +136,5 @@ while inPlay: #Animation loop
     if keys[pygame.K_ESCAPE]:
         inPlay = False
     main()
-
 
 pygame.quit()
