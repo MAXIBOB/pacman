@@ -118,10 +118,10 @@ def sprite_move():
 			if PACMAN_X > WIDTH-PACMAN_WIDTH:
 				PACMAN_X = 0
 
-		if keys[pygame.K_UP]:
+		if keys[pygame.K_UP] and PACMAN_Y>0:
 			PACMAN_Y -= PACMAN_VEL
 
-		if keys[pygame.K_DOWN]:
+		if keys[pygame.K_DOWN] and PACMAN_Y<HEIGHT-60:
 			PACMAN_Y += PACMAN_VEL
 
 		drawMap()
