@@ -14,7 +14,7 @@ def drawScreen():
     
 inPlay = True
 print "Hit ESC to end the program."
-while inPlay: #Animation loop
+while inPlay:
     pygame.event.get()
     keys = pygame.key.get_pressed()     
     if keys[pygame.K_ESCAPE]:
