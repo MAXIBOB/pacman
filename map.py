@@ -110,9 +110,13 @@ def sprite_move():
 
 		if keys[pygame.K_LEFT]:
 			PACMAN_X -= PACMAN_VEL
+			if PACMAN_X<0:
+				PACMAN_X = WIDTH-PACMAN_WIDTH
 
 		if keys[pygame.K_RIGHT]:
 			PACMAN_X += PACMAN_VEL
+			if PACMAN_X > WIDTH-PACMAN_WIDTH:
+				PACMAN_X = 0
 
 		if keys[pygame.K_UP]:
 			PACMAN_Y -= PACMAN_VEL
