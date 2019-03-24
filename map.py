@@ -19,6 +19,7 @@ GHOST_HEIGHT = 20
 GHOST_X = WIDTH/2
 GHOST_Y = HEIGHT/2 - 15
 GHOST_VEL = 1
+GHOST_UP = True
 
 YELLOW = (255,255,153)
 BLACK = (0, 0, 0)
@@ -42,6 +43,42 @@ class Ghosts(pygame.sprite.Sprite):
         self.image =  pygame.transform.scale(self.image, (self.width, self.height))
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+    def wallStop(self):
+	if tuple(screen.get_at((self.x, self.y))) == BORDER_COLOR or tuple(screen.get_at((self.x+self.width, self.y+self.height))) == BORDER_COLOR or tuple(screen.get_at((self.x+self.width, self.y))) == BORDER_COLOR or tuple(screen.get_at((self.x, self.y+self.height))) == BORDER_COLOR or tuple(screen.get_at((self.x+self.width/2, self.y))) == BORDER_COLOR or tuple(screen.get_at((self.x, self.y+self.height/2))) == BORDER_COLOR or tuple(screen.get_at((self.x+self.width/2, self.y+self.height))) == BORDER_COLOR or tuple(screen.get_at((self.x+self.width, self.y+self.height/2))) == BORDER_COLOR:
+            return True
+        else:
+            return False    
+
+    def move(self):
+	global GHOST_UP
+	if GHOST_UP:
+	    if self.y>230:
+                self.y -= self.vel
+	        time.sleep(0.003)
+	    else:
+		GHOST_UP = False
+	else:
+	    if self.x<PACMAN_X:
+		self.x += self.vel
+		if self.wallStop():
+		    self.x -= self.vel
+		time.sleep(0.003)
+	    else:
+		self.x -= self.vel
+		if self.wallStop():
+		    self.x += self.vel
+		time.sleep(0.003)
+	    if self.y<PACMAN_Y:
+		self.y += self.vel
+	        if self.wallStop():
+		    self.y -= self.vel
+		time.sleep(0.003)
+	    else:
+		self.y -= self.vel
+		if self.wallStop():
+		    self.y += self.vel
+		time.sleep(0.003)
+
 ghost1 = Ghosts(GHOST_WIDTH, GHOST_HEIGHT, GHOST_X, GHOST_Y, GHOST_VEL)
 
 def drawMap():
@@ -100,6 +137,7 @@ def sprite_move():
 				PACMAN_Y -= PACMAN_VEL
 			time.sleep(0.002)
 
+		ghost1.move()
 		drawMap()
 		pygame.draw.rect(screen, YELLOW, (PACMAN_X, PACMAN_Y, PACMAN_WIDTH, PACMAN_HEIGHT))
 		pygame.display.update()
@@ -107,7 +145,6 @@ def sprite_move():
 def main():
     drawMap()
     sprite_move()
-
  
 inPlay = True
 print "Hit ESC to end the program."
