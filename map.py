@@ -27,12 +27,14 @@ GHOST4_Y = 580
 GHOST_VEL = 1
 GHOST_UP = True
 GHOST_TURN = True
+ALIVE = True
 
 YELLOW = (255,255,153)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 WHITE = (255,255,255)
 BORDER_COLOR = (0, 128, 248, 255)
+GHOST_COLOR = (42, 191, 242, 255)
 
 image = pygame.image.load('template.png').convert()
 image = pygame.transform.scale(image, (560, 620))
@@ -105,6 +107,13 @@ def detectCollide():
 	else:
 		return False
 
+def ghostCollide():
+	global ALIVE
+	if tuple(screen.get_at((PACMAN_X, PACMAN_Y))) == GHOST_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH, PACMAN_Y+PACMAN_HEIGHT))) == GHOST_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH, PACMAN_Y))) == GHOST_COLOR or tuple(screen.get_at((PACMAN_X, PACMAN_Y+PACMAN_HEIGHT))) == GHOST_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH/2, PACMAN_Y))) == GHOST_COLOR or tuple(screen.get_at((PACMAN_X, PACMAN_Y+PACMAN_HEIGHT/2))) == GHOST_COLOR or tuple(screen.get_at((PACMAN_X + PACMAN_WIDTH, PACMAN_Y+PACMAN_HEIGHT/2))) == GHOST_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH/2, PACMAN_Y+PACMAN_HEIGHT))) == GHOST_COLOR: 
+		ALIVE = False
+		
+	else:
+		ALIVE = True
 
 def sprite_move():
 	run = True
@@ -144,26 +153,32 @@ def sprite_move():
 			if detectCollide():
 				PACMAN_Y -= PACMAN_VEL
 			time.sleep(0.0006)
+		if ALIVE:
 
-		ghost4.move()
-		ghost3.move()
-		ghost2.move()
-		ghost1.move()
-		drawMap()
-		pygame.draw.rect(screen, YELLOW, (PACMAN_X, PACMAN_Y, PACMAN_WIDTH, PACMAN_HEIGHT))
-		pygame.display.update()
+			ghost4.move()
+			ghost3.move()
+			ghost2.move()
+			ghost1.move()
+			ghostCollide()
+			drawMap()
+			pygame.draw.rect(screen, YELLOW, (PACMAN_X, PACMAN_Y, PACMAN_WIDTH, PACMAN_HEIGHT))
+			pygame.display.update()
+		else:
+			pygame.quit()
 		
 def main():
-    drawMap()
-    sprite_move()
- 
-inPlay = True
+    if ALIVE == True:
+        drawMap()
+        sprite_move()
+    else:
+	pygame.quit()
+
 print "Hit ESC to end the program."
-while inPlay: #Animation loop
+while ALIVE: #Animation loop
     pygame.event.get()
-    keys = pygame.key.get_pressed()     
+    keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
-        inPlay = False
+        ALIVE = False
     main()
 
 pygame.quit()
