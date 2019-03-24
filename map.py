@@ -7,6 +7,13 @@ HEIGHT = 620
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Pacman")
 
+PACMAN_X = 50
+PACMAN_Y = 50
+PACMAN_WIDTH = 40
+PACMAN_HEIGHT = 60
+PACMAN_VEL = 1
+
+YELLOW = (255,255,153)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 WHITE = (255,255,255)
@@ -86,11 +93,43 @@ def drawMap():
     for i in range (0, 12):
         pygame.draw.rect (screen, WHITE, [x, y, 5, 5], 0)
         x = x + 20
-    pygame.display.update()  
     
 
+def sprite_move():
+	run = True
+	while run:
+		
+
+	        for event in pygame.event.get():
+        	        if event.type == pygame.QUIT:
+        	                run = False
+		
+		keys = pygame.key.get_pressed()
+		global PACMAN_X
+		global PACMAN_Y
+
+		if keys[pygame.K_LEFT]:
+			PACMAN_X -= PACMAN_VEL
+			if PACMAN_X<0:
+				PACMAN_X = WIDTH-PACMAN_WIDTH
+
+		if keys[pygame.K_RIGHT]:
+			PACMAN_X += PACMAN_VEL
+			if PACMAN_X > WIDTH-PACMAN_WIDTH:
+				PACMAN_X = 0
+
+		if keys[pygame.K_UP] and PACMAN_Y>0:
+			PACMAN_Y -= PACMAN_VEL
+
+		if keys[pygame.K_DOWN] and PACMAN_Y<HEIGHT-60:
+			PACMAN_Y += PACMAN_VEL
+
+		drawMap()
+		pygame.draw.rect(screen, YELLOW, (PACMAN_X, PACMAN_Y, PACMAN_WIDTH, PACMAN_HEIGHT))
+		pygame.display.update()
 def main():
     drawMap()
+    sprite_move()
     
     
 inPlay = True
