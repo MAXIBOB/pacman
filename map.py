@@ -14,6 +14,12 @@ PACMAN_WIDTH = 20
 PACMAN_HEIGHT = 20
 PACMAN_VEL = 1
 
+GHOST_WIDTH = 20
+GHOST_HEIGHT = 20
+GHOST_X = WIDTH/2
+GHOST_Y = HEIGHT/2 - 15
+GHOST_VEL = 1
+
 YELLOW = (255,255,153)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
@@ -22,6 +28,21 @@ BORDER_COLOR = (0, 128, 248, 255)
 
 image = pygame.image.load('template.png').convert()
 image = pygame.transform.scale(image, (560, 620))
+
+class Ghosts(pygame.sprite.Sprite):
+    def __init__(self, width, height, x, y, vel):
+        super(Ghosts, self).__init__()
+
+	self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
+        self.vel = vel
+        self.image = pygame.image.load('ghost.png').convert_alpha()
+        self.image =  pygame.transform.scale(self.image, (self.width, self.height))
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+ghost1 = Ghosts(GHOST_WIDTH, GHOST_HEIGHT, GHOST_X, GHOST_Y, GHOST_VEL)
 
 def drawMap():
     screen.blit(image, [0,0])
@@ -32,6 +53,7 @@ def drawMap():
     for i in range (0, 12):
         pygame.draw.rect (screen, WHITE, [x, y, 5, 5], 0)
         x = x + 20
+    screen.blit (ghost1.image, [ghost1.x, ghost1.y])
 def detectCollide():
 	if tuple(screen.get_at((PACMAN_X, PACMAN_Y))) == BORDER_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH, PACMAN_Y+PACMAN_HEIGHT))) == BORDER_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH, PACMAN_Y))) == BORDER_COLOR or tuple(screen.get_at((PACMAN_X, PACMAN_Y+PACMAN_HEIGHT))) == BORDER_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH/2, PACMAN_Y))) == BORDER_COLOR or tuple(screen.get_at((PACMAN_X, PACMAN_Y+PACMAN_HEIGHT/2))) == BORDER_COLOR or tuple(screen.get_at((PACMAN_X + PACMAN_WIDTH, PACMAN_Y+PACMAN_HEIGHT/2))) == BORDER_COLOR or tuple(screen.get_at((PACMAN_X+PACMAN_WIDTH/2, PACMAN_Y+PACMAN_HEIGHT))) == BORDER_COLOR: 
 		return True
@@ -54,16 +76,14 @@ def sprite_move():
 
 		if keys[pygame.K_LEFT]:
 			PACMAN_X -= PACMAN_VEL
-			if PACMAN_X<0:
-				PACMAN_X = WIDTH-PACMAN_WIDTH
+			
 			if detectCollide():
 				PACMAN_X += PACMAN_VEL
 			time.sleep(0.002)
 
 		if keys[pygame.K_RIGHT]:
 			PACMAN_X += PACMAN_VEL
-			if PACMAN_X > WIDTH-PACMAN_WIDTH:
-				PACMAN_X = 0
+			
 			if detectCollide():
 				PACMAN_X -= PACMAN_VEL
 			time.sleep(0.002)
